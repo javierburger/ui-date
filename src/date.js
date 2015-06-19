@@ -1,7 +1,6 @@
 /*global angular */
 /*
  jQuery UI Datepicker plugin wrapper
-
  @note If ≤ IE8 make sure you have a polyfill for Date.toISOString()
  @param [ui-date] {object} Options to pass to $.fn.datepicker() merged onto uiDateConfig
  */
@@ -35,7 +34,7 @@ angular.module('ui.date', [])
               preserve[key] = controller.$modelValue['get' + key]();
             });
           }
-          controller.$setViewValue(element.datepicker('getDate'));
+          controller.$setViewValue($(element).datepicker('getDate'));
 
           if (isDate) {
             angular.forEach(keys, function(key) {
@@ -55,7 +54,7 @@ angular.module('ui.date', [])
               showing = true;
               setVal();
               _onSelect(value, picker);
-              element.blur();
+              $(element).blur();
             });
           };
 
@@ -70,10 +69,10 @@ angular.module('ui.date', [])
             showing = false;
             _onClose(value, picker);
           };
-          element.off('blur.datepicker').on('blur.datepicker', function() {
+          $(element).off('blur.datepicker').on('blur.datepicker', function() {
             if ( !showing ) {
               scope.$apply(function() {
-                element.datepicker('setDate', element.datepicker('getDate'));
+                $(element).datepicker('setDate', $(element).datepicker('getDate'));
                 setVal();
               });
             }
@@ -89,21 +88,21 @@ angular.module('ui.date', [])
                     throw new Error('ng-Model value must be a Date, or a String object with a date formatter - currently it is a ' + typeof date + ' - use ui-date-format to convert it from a string');
                 }
             }
-            element.datepicker('setDate', date);
+            $(element).datepicker('setDate', date);
           };
         }
         // Check if the element already has a datepicker.
-        if (element.data('datepicker')) {
+        if ($(element).data('datepicker')) {
             // Updates the datepicker options
-            element.datepicker('option', opts);
-            element.datepicker('refresh');
+            $(element).datepicker('option', opts);
+            $(element).datepicker('refresh');
         } else {
             // Creates the new datepicker widget
-            element.datepicker(opts);
+            $(element).datepicker(opts);
 
             //Cleanup on destroy, prevent memory leaking
-            element.on('$destroy', function () {
-               element.datepicker('destroy');
+            $(element).on('$destroy', function () {
+               $(element).datepicker('destroy');
             });
         }
 
